@@ -10,7 +10,7 @@
 
     <groupId>com.github.kaeluka</groupId>
     <artifactId>spencer-server</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1-SNAPSHOT</version>
 
     <packaging>jar</packaging>
     <url>https://github.com/kaeluka/spencer-server</url>
@@ -40,7 +40,7 @@
         <connection>scm:git:git@github.com:kaeluka/spencer-server.git</connection>
         <developerConnection>scm:git:git@github.com:kaeluka/spencer-server.git</developerConnection>
         <url>scm:git:git@github.com:kaeluka/spencer-server.git</url>
-      <tag>spencer-server-0.1.0</tag>
+      <tag>HEAD</tag>
   </scm>
 
     <distributionManagement>
