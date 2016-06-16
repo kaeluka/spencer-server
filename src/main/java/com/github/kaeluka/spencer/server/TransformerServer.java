@@ -1,4 +1,4 @@
-package org.spencer.server;
+package com.github.kaeluka.spencer.server;
 
 import org.apache.commons.io.FileUtils;
 import org.spencer.instrumentation.Instrument;
@@ -7,10 +7,12 @@ import org.spencer.instrumentation.Util;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.util.Arrays;
 
 public class TransformerServer {
 	private static ServerSocket ss = null;
+    private static volatile boolean tearDown = false;
 
 	static {
 		try {
@@ -29,6 +31,10 @@ public class TransformerServer {
 	public static void main(String[] args) throws ClassNotFoundException {
 		new TransformerServer();
 	}
+
+    public static void tearDown() {
+        TransformerServer.tearDown = true;
+    }
 
 	public static void dumpClassDataToFile(byte[] recvd, String subdir) throws IOException,
 			FileNotFoundException {
@@ -95,6 +101,7 @@ public class TransformerServer {
 
 	private static void setupConnection() throws IOException {
 		TransformerServer.ss = new ServerSocket(1345);
+        TransformerServer.ss.setSoTimeout(5000);
 	}
 
 //	private static void closeConnection() throws IOException {
@@ -105,10 +112,20 @@ public class TransformerServer {
 		try {
 			setupConnection();
 			for(;;) {
-				System.out.print("Listening for connection from instrumentation agent.. ");
+                if (TransformerServer.tearDown) {
+                    System.out.println("stopping transformer server");
+                    System.exit(0);
+                }
+                System.out.println("Listening for connection from instrumentation agent.. ");
 				byte[] recvd = null;
 				try {
-					recvd = receiveByteArray();
+                    try {
+                        recvd = receiveByteArray();
+                    } catch (SocketTimeoutException ex) {
+                        //"coming up for air", the socket times out, so the
+                        // server can check whether it has been killed
+                        continue;
+                    }
 					dumpClassDataToFile(recvd, "input");
 
 					if (! Util.isInXBootclassPath(Instrument.getClassName(recvd))) {
@@ -143,7 +160,7 @@ public class TransformerServer {
 					System.err.println("wrote error to <instrumentation_error.log>");
 					//Send the uninstrumented classfile back to the instrumentation tool (it's the best we can do...):
 					sendByteArray(recvd);
-					//System.exit(1);
+//					System.exit(1);
 				}
 			}
 		} catch (IOException e) {
