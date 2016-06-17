@@ -9,10 +9,12 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.Arrays;
+import java.util.concurrent.Semaphore;
 
 public class TransformerServer {
 	private static ServerSocket ss = null;
     private static volatile boolean tearDown = false;
+    private static volatile Semaphore running = new Semaphore(0);
 
 	static {
 		try {
@@ -34,6 +36,14 @@ public class TransformerServer {
 
     public static void tearDown() {
         TransformerServer.tearDown = true;
+    }
+
+    public static void awaitRunning() {
+        try {
+            TransformerServer.running.acquire();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 	public static void dumpClassDataToFile(byte[] recvd, String subdir) throws IOException,
@@ -111,6 +121,7 @@ public class TransformerServer {
 	public TransformerServer() {
 		try {
 			setupConnection();
+            TransformerServer.running.release();
 			for(;;) {
                 if (TransformerServer.tearDown) {
                     System.out.println("stopping transformer server");
