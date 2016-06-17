@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-        <name>spencer-server</name>
+    <name>spencer-server</name>
 
     <groupId>com.github.kaeluka</groupId>
     <artifactId>spencer-server</artifactId>
@@ -37,11 +39,13 @@
     </developers>
 
     <scm>
-        <connection>scm:git:git@github.com:kaeluka/spencer-server.git</connection>
-        <developerConnection>scm:git:git@github.com:kaeluka/spencer-server.git</developerConnection>
+        <connection>scm:git:git@github.com:kaeluka/spencer-server.git
+        </connection>
+        <developerConnection>scm:git:git@github.com:kaeluka/spencer-server.git
+        </developerConnection>
         <url>scm:git:git@github.com:kaeluka/spencer-server.git</url>
-      <tag>HEAD</tag>
-  </scm>
+        <tag>HEAD</tag>
+    </scm>
 
     <distributionManagement>
         <snapshotRepository>
@@ -50,13 +54,13 @@
         </snapshotRepository>
         <repository>
             <id>ossrh</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/
+            </url>
         </repository>
     </distributionManagement>
 
     <build>
         <plugins>
-
 
 
             <plugin>
