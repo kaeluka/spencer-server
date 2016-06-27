@@ -1,8 +1,8 @@
 package com.github.kaeluka.spencer.server;
 
 import org.apache.commons.io.FileUtils;
-import org.spencer.instrumentation.Instrument;
-import org.spencer.instrumentation.Util;
+import com.github.kaeluka.spencer.instrumentation.Instrument;
+import com.github.kaeluka.spencer.instrumentation.Util;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -52,9 +52,10 @@ public class TransformerServer {
 		final String className = Instrument.getClassName(recvd);
 		final String dumpFileName = "log/"+subdir+"/"+className+".class";
 
-		System.out.println("dumping class data to file "+dumpFileName);
-
 		final File classDumpFile = new File(dumpFileName);
+
+//		System.out.println("dumping class data to file "+classDumpFile.getAbsolutePath());
+
 		if (!classDumpFile.getParentFile().exists()) {
 			classDumpFile.getParentFile().mkdirs();
 		}
@@ -80,10 +81,10 @@ public class TransformerServer {
 
 	private static byte[] receiveByteArray() throws IOException {
 		Socket socket = TransformerServer.ss.accept();
-		System.out.println("Accepted connection");
+//		System.out.println("Accepted connection");
 		DataInputStream instream = new DataInputStream(socket.getInputStream());
 		long len = readInt32(instream);
-		System.out.println("length of original class is "+len);
+//		System.out.println("length of original class is "+len);
 		byte[] msgarr = new byte[(int)len];
 
 		int actualLen = 0;
@@ -91,7 +92,7 @@ public class TransformerServer {
 			final int readLen = instream.read(msgarr, actualLen, (int)(len-actualLen));
 			if (readLen > 0) {
 				actualLen += readLen;
-				System.out.println("..."+actualLen);
+//				System.out.println("..."+actualLen);
 			}
 		} while (actualLen != len);
 
@@ -104,14 +105,14 @@ public class TransformerServer {
 			int by = instream.readUnsignedByte();
 			assert(by >= 0);
 			len += by << (i*8);
-			System.out.println(by+" "+len);
+//			System.out.println(by+" "+len);
 		}
 		return len;
 	}
 
 	private static void setupConnection() throws IOException {
 		TransformerServer.ss = new ServerSocket(1345);
-        TransformerServer.ss.setSoTimeout(5000);
+        TransformerServer.ss.setSoTimeout(1000);
 	}
 
 //	private static void closeConnection() throws IOException {
@@ -124,10 +125,10 @@ public class TransformerServer {
             TransformerServer.running.release();
 			for(;;) {
                 if (TransformerServer.tearDown) {
-                    System.out.println("stopping transformer server");
+//                    System.out.println("stopping transformer server");
                     System.exit(0);
                 }
-                System.out.println("Listening for connection from instrumentation agent.. ");
+//                System.out.println("Listening for connection from instrumentation agent.. ");
 				byte[] recvd = null;
 				try {
                     try {
@@ -151,7 +152,7 @@ public class TransformerServer {
 						}
 						sendByteArray(transformed);
 					} else {
-						System.out.println("not transforming class "+Instrument.getClassName(recvd)+", there already is a transformed version in the xbootclasspath");
+//						System.out.println("not transforming class "+Instrument.getClassName(recvd)+", there already is a transformed version in the xbootclasspath");
 						sendByteArray(recvd);
 					}
 
