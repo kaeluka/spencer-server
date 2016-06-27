@@ -10,7 +10,7 @@
 
     <groupId>com.github.kaeluka</groupId>
     <artifactId>spencer-server</artifactId>
-    <version>0.1.2</version>
+    <version>0.1.3-SNAPSHOT</version>
 
     <packaging>jar</packaging>
     <url>https://github.com/kaeluka/spencer-server</url>
@@ -42,7 +42,7 @@
         <developerConnection>scm:git:git@github.com:kaeluka/spencer-server.git
         </developerConnection>
         <url>scm:git:git@github.com:kaeluka/spencer-server.git</url>
-        <tag>spencer-server-0.1.2</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <distributionManagement>
@@ -143,7 +143,7 @@
         <dependency>
             <groupId>com.github.kaeluka</groupId>
             <artifactId>spencer-instrumentation</artifactId>
-            <version>0.1.2</version>
+            <version>0.1.3-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
